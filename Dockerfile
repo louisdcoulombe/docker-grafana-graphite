@@ -37,15 +37,25 @@ RUN     git clone https://github.com/graphite-project/graphite-web.git /src/grap
         python setup.py install
 
 # Install StatsD
-RUN     git clone https://github.com/etsy/statsd.git /src/statsd                                                                        &&\
-        cd /src/statsd                                                                                                                  &&\
+RUN     git clone https://github.com/etsy/statsd.git /src/statsd                          &&\
+        cd /src/statsd                                                                    &&\
         git checkout v0.7.2
+
+# Install mongoDB
+RUN     mkdir /opt/mongodb
+RUN     wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.9.tgz -O mongodb.tgz  &&\
+        tar -zxvf mongodb.tgz -C /opt/mongodb
+
+# Install seyren
+RUN     mkdir /opt/seyren
+RUN     wget https://github.com/scobal/seyren/releases/download/1.3.0/seyren-1.3.0.jar    &&\
+        mv seyren-1.3.0.jar /opt/seyren 
 
 
 # Install Grafana
 RUN     mkdir /src/grafana                                                                                    &&\
         mkdir /opt/grafana                                                                                    &&\
-        wget https://grafanarel.s3.amazonaws.com/builds/grafana-2.1.3.linux-x64.tar.gz -O /src/grafana.tar.gz &&\
+        wget https://grafanarel.s3.amazonaws.com/builds/grafana-2.6.0.linux-x64.tar.gz -O /src/grafana.tar.gz &&\
         tar -xzf /src/grafana.tar.gz -C /opt/grafana --strip-components=1                                     &&\
         rm /src/grafana.tar.gz
 
